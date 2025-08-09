@@ -1,105 +1,133 @@
 /* eslint-disable @next/next/no-img-element */
+'use client'
+
 import React from "react";
-import Link from "next/link";
+import { motion } from "framer-motion";
+import { FaPlus, FaRegHeart, FaRegComment } from "react-icons/fa";
 
-export default function HomePage() {
-  return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Navbar */}
-      <nav className="flex items-center justify-between px-4 md:px-8 py-4 bg-white shadow-sm">
-        <div className="text-2xl font-bold text-blue-600">Connectra</div>
-        <div className="hidden md:flex space-x-6">
-          <Link href="/profile" className="text-gray-700 hover:text-blue-600 transition">
-            Profile
-          </Link>
-          <Link href="/messages" className="text-gray-700 hover:text-blue-600 transition">
-            Messages
-          </Link>
-          <Link href="/settings" className="text-gray-700 hover:text-blue-600 transition">
-            Settings
-          </Link>
-          <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
-            Logout
-          </button>
-        </div>
-        {/* Mobile Menu */}
-        <div className="md:hidden">
-          <button className="text-gray-700">☰</button>
-        </div>
-      </nav>
+const HomePage: React.FC = () => {
+    const posts = [
+        {
+            id: 1,
+            user: "John Doe",
+            avatar: "/avatar1.jpg",
+            content: "Enjoying the sunny weather at the beach!",
+            image: "/images/sample-img.jpg",
+            likes: 120,
+            comments: 15,
+        },
+        {
+            id: 2,
+            user: "Jane Smith",
+            avatar: "/avatar2.jpg",
+            content: "Just finished a 5k run, feeling great!",
+            image: "/images/sample-img.jpg",
+            likes: 95,
+            comments: 8,
+        },
+        {
+            id: 3,
+            user: "John Doe",
+            avatar: "/avatar1.jpg",
+            content: "Enjoying the sunny weather at the beach!",
+            image: "/images/sample-img.jpg",
+            likes: 120,
+            comments: 15,
+        },
+        {
+            id: 4,
+            user: "Jane Smith",
+            avatar: "/avatar2.jpg",
+            content: "Just finished a 5k run, feeling great!",
+            image: "/images/sample-img.jpg",
+            likes: 95,
+            comments: 8,
+        },
+        {
+            id: 5,
+            user: "John Doe",
+            avatar: "/avatar1.jpg",
+            content: "Enjoying the sunny weather at the beach!",
+            image: "/images/sample-img.jpg",
+            likes: 120,
+            comments: 15,
+        },
+        {
+            id: 6,
+            user: "Jane Smith",
+            avatar: "/avatar2.jpg",
+            content: "Just finished a 5k run, feeling great!",
+            image: "/images/sample-img.jpg",
+            likes: 95,
+            comments: 8,
+        },
+    ];
 
-      {/* Main Content */}
-      <main className="flex-1 px-4 md:px-8 py-6 max-w-7xl mx-auto w-full">
-        {/* Welcome Banner */}
-        <section className="bg-white rounded-xl shadow p-6 mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Welcome back, John Doe 👋</h1>
-          <p className="text-gray-600 mt-2">
-            Here’s what’s happening in your network today.
-          </p>
-        </section>
-
-        {/* Feed */}
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* Left Sidebar */}
-          <aside className="hidden md:block md:col-span-1 space-y-4">
-            <div className="bg-white p-4 rounded-xl shadow">
-              <h2 className="text-lg font-semibold mb-3">Your Shortcuts</h2>
-              <ul className="space-y-2 text-blue-600">
-                <li><Link href="/friends">Friends</Link></li>
-                <li><Link href="/groups">Groups</Link></li>
-                <li><Link href="/events">Events</Link></li>
-              </ul>
-            </div>
-          </aside>
-
-          {/* Main Feed */}
-          <section className="md:col-span-2 space-y-6">
-            {/* Post Box */}
-            <div className="bg-white p-4 rounded-xl shadow">
-              <textarea
-                placeholder="What's on your mind?"
-                className="w-full border p-3 rounded-lg resize-none"
-                rows={3}
-              ></textarea>
-              <div className="flex justify-end mt-3">
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                  Post
-                </button>
-              </div>
-            </div>
-
-            {/* Example Posts */}
-            {[1, 2, 3].map((post) => (
-              <div key={post} className="bg-white p-4 rounded-xl shadow">
-                <div className="flex items-center gap-3 mb-3">
-                  <img
-                    src={`/user${post}.jpg`}
-                    alt="User"
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <div>
-                    <h3 className="font-semibold text-gray-900">Jane Smith</h3>
-                    <p className="text-sm text-gray-500">2 hours ago</p>
-                  </div>
+    return (
+        <>
+            <section className="py-6 px-4 max-w-4xl mx-auto">
+                {/* Create Post Section */}
+                <div className="bg-white shadow-md rounded-2xl p-4 flex items-center space-x-4">
+                    <img
+                        src="/avatar-placeholder.png"
+                        alt="User Avatar"
+                        className="w-12 h-12 rounded-full"
+                    />
+                    <input
+                        type="text"
+                        placeholder="What's on your mind?"
+                        className="flex-grow px-4 py-2 bg-gray-100 rounded-full focus:outline-none"
+                    />
+                    <button className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition">
+                        <FaPlus />
+                    </button>
                 </div>
-                <p className="text-gray-700 mb-3">
-                  Just had the best coffee at the new cafe downtown ☕
-                </p>
-                <img
-                  src="/post-image.jpg"
-                  alt="Post"
-                  className="w-full h-auto rounded-lg"
-                />
-              </div>
-            ))}
-          </section>
-        </div>
-      </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 py-6 text-center">
-        <p>© {new Date().getFullYear()} Connectra. All rights reserved.</p>
-      </footer>
-    </div>
-  );
-}
+                {/* Posts Feed */}
+                <div className="mt-6 space-y-6">
+                    {posts.map((post, index) => (
+                        <motion.div
+                            key={post.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1, duration: 0.4 }}
+                            className="bg-white shadow-md rounded-2xl overflow-hidden"
+                        >
+                            {/* Post Header */}
+                            <div className="flex items-center p-4">
+                                <img
+                                    src={post.avatar}
+                                    alt={post.user}
+                                    className="w-10 h-10 rounded-full"
+                                />
+                                <span className="ml-3 font-semibold text-gray-800">
+                                    {post.user}
+                                </span>
+                            </div>
+
+                            {/* Post Content */}
+                            <p className="px-4 pb-4 text-gray-700">{post.content}</p>
+
+                            {/* Post Image */}
+                            {post.image && (
+                                <img src={post.image} alt="Post" className="w-full object-cover" />
+                            )}
+
+                            {/* Post Actions */}
+                            <div className="flex items-center justify-between p-4 border-t">
+                                <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition">
+                                    <FaRegHeart /> <span>{post.likes}</span>
+                                </button>
+                                <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition">
+                                    <FaRegComment /> <span>{post.comments}</span>
+                                </button>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            </section>
+        </>
+    );
+};
+
+export default HomePage;

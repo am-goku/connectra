@@ -1,88 +1,101 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react';
-import { FiArrowLeft, FiMenu } from 'react-icons/fi';
+import React, { useState } from "react";
+import { cn } from "@/lib/utils";
+import { ArrowLeft } from "lucide-react";
 
-const MessagePage: React.FC = () => {
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+export default function ChatPage() {
+    const [selectedUser, setSelectedUser] = useState<string | null>(null);
+    const [activeTab, setActiveTab] = useState<"list" | "chat">("list");
 
-  const users = [
-    { id: '1', name: 'Alice' },
-    { id: '2', name: 'Bob' },
-    { id: '3', name: 'Charlie' }
-  ];
+    const users = [
+        { id: "1", name: "Alice" },
+        { id: "2", name: "Bob" },
+        { id: "3", name: "Charlie" },
+    ];
 
-  return (
-    <div className="flex flex-col h-screen">
-      {/* Header */}
-      <header className="bg-blue-600 text-white flex items-center justify-between p-4 shadow-md">
-        <h1 className="text-lg font-bold">Connectra Messages</h1>
-        <button className="md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
-          <FiMenu size={24} />
-        </button>
-      </header>
+    const messages = [
+        { from: "Alice", text: "Hey! How are you?" },
+        { from: "me", text: "I'm good, thanks! How about you?" },
+        { from: "Alice", text: "Doing well! What’s up?" },
+    ];
 
-      <div className="flex flex-1 overflow-hidden">
-        {/* User List */}
-        <aside
-          className={`bg-gray-100 border-r border-gray-300 md:w-1/4 w-full md:block ${
-            sidebarOpen ? 'block' : 'hidden'
-          }`}
-        >
-          <ul>
-            {users.map(user => (
-              <li
-                key={user.id}
-                className="p-4 border-b hover:bg-gray-200 cursor-pointer"
-                onClick={() => {
-                  setSelectedUser(user.name);
-                  setSidebarOpen(false);
-                }}
-              >
-                {user.name}
-              </li>
-            ))}
-          </ul>
-        </aside>
+    const handleSelectUser = (id: string) => {
+        setSelectedUser(id);
+        setActiveTab("chat");
+    };
 
-        {/* Chat Area */}
-        <main className="flex-1 flex flex-col">
-          {selectedUser ? (
-            <>
-              {/* Chat Header */}
-              <div className="flex items-center p-4 border-b bg-white shadow-sm">
-                <button
-                  className="md:hidden mr-2"
-                  onClick={() => setSelectedUser(null)}
-                >
-                  <FiArrowLeft size={24} />
-                </button>
-                <h2 className="font-semibold text-gray-800">{selectedUser}</h2>
-              </div>
-              {/* Chat Messages */}
-              <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
-                <p className="text-gray-500">Chat with {selectedUser}...</p>
-              </div>
-              {/* Chat Input */}
-              <div className="p-4 border-t bg-white flex items-center">
-                <input
-                  type="text"
-                  placeholder="Type a message..."
-                  className="flex-1 border rounded-lg p-2 mr-2"
-                />
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">Send</button>
-              </div>
-            </>
-          ) : (
-            <div className="hidden md:flex flex-1 items-center justify-center text-gray-500">
-              Select a user to start chatting
+    return (
+        <div className="h-screen flex flex-col md:flex-row bg-white border rounded-lg overflow-hidden">
+            {/* User List */}
+            <div
+                className={cn(
+                    "w-full md:w-1/3 border-r border-gray-200 flex-shrink-0 bg-gray-50 md:block",
+                    activeTab === "chat" ? "hidden md:block" : "block"
+                )}
+            >
+                <div className="p-4 font-bold border-b">Chats</div>
+                {users.map((user) => (
+                    <div
+                        key={user.id}
+                        className="p-4 cursor-pointer hover:bg-gray-100"
+                        onClick={() => handleSelectUser(user.id)}
+                    >
+                        {user.name}
+                    </div>
+                ))}
             </div>
-          )}
-        </main>
-      </div>
-    </div>
-  );
-};
 
-export default MessagePage;
+            {/* Chat Area */}
+            <div
+                className={cn(
+                    "flex flex-col w-full md:w-2/3",
+                    activeTab === "list" ? "hidden md:flex" : "flex"
+                )}
+            >
+                {/* Header */}
+                <div className="flex items-center p-4 border-b">
+                    {/* Back button for mobile */}
+                    <button
+                        className="md:hidden mr-2"
+                        onClick={() => setActiveTab("list")}
+                    >
+                        <ArrowLeft className="w-5 h-5" />
+                    </button>
+                    <span className="font-bold">
+                        {users.find((u) => u.id === selectedUser)?.name || "Select a chat"}
+                    </span>
+                </div>
+
+                {/* Messages */}
+                <div className="flex-1 p-4 overflow-y-auto">
+                    {messages.map((msg, idx) => (
+                        <div
+                            key={idx}
+                            className={cn(
+                                "mb-2 p-2 rounded-lg max-w-[70%]",
+                                msg.from === "me"
+                                    ? "bg-blue-500 text-white ml-auto"
+                                    : "bg-gray-200 text-gray-800"
+                            )}
+                        >
+                            {msg.text}
+                        </div>
+                    ))}
+                </div>
+
+                {/* Input */}
+                <div className="p-4 border-t flex">
+                    <input
+                        type="text"
+                        placeholder="Type a message..."
+                        className="flex-1 border rounded-l-lg px-3 py-2 focus:outline-none"
+                    />
+                    <button className="bg-blue-500 text-white px-4 rounded-r-lg">
+                        Send
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
